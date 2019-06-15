@@ -104,7 +104,7 @@ HealthData$aadr<-as.numeric(as.character(HealthData$aadr))
 * unintentional injury  
 
 ```{r datatable1}
-table(HealthData$state, HealthData$cause_name)
+head(table(HealthData$state, HealthData$cause_name), n =5)
 ```
 
 
@@ -116,6 +116,22 @@ US <-HealthData %>% filter(state =="United States") %>% group_by(cause_name) %>%
 
 State <-HealthData %>%  group_by(cause_name) %>% arrange(cause_name,year, state ) %>% group_by(year,state) %>% mutate(totdeaths=max(deaths)) %>% mutate(Death_Percent = round(deaths/totdeaths*100,1) )  %>% filter(cause_name != c("All causes"))
 
+```
+
+The first bar chart shows that most of the death percentages at the national level fall between one and seven percent based on the cause. This grouping of percentages has a bell shaped curve to them but the more intriguing bell shape is beyond the twenty percent threshold.
+
+``` {R display new US variable}
+gDeathPercUS <- ggplot(data = US, aes(x = Death_Percent))
+gDeathPercUS + geom_bar() + 
+  labs(x = "Death Percentage", title = "National level of death percentage")
+```
+
+At the state level, the mational bar chart is reflected in chart below but with more refinement in the peaks and the outlying bell shape beyond twenty percent.
+
+``` {R display new State variable}
+gDeathPercState <- ggplot(data = State, aes(x = Death_Percent))
+gDeathPercState + geom_bar() + 
+  labs(x = "Death Percentage", title = "State level of death percentage")
 ```
 
 # Numeric Summary
